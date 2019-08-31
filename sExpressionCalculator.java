@@ -24,15 +24,20 @@ public class sExpressionCalculator {
 	private static final String OPERATOR_MULTIPLY = "multiply";
 	
 	public static void main(String[] args) {
-			
-		String expression = args[0];
-		expression = expression.substring(0, expression.length()-1);
 		
-		List<String> list = subExpression(expression);
-		
-		int result = calculateExpression(list);
-		
-		System.out.println(result);
+		try {
+			String expression = args[0];
+			if(expression.endsWith(")")){
+				expression = expression.substring(0, expression.length()-1);
+			}			
+			List<String> list = subExpression(expression);
+			int result = calculateExpression(list);
+			System.out.println(result);
+		}catch(ArrayIndexOutOfBoundsException | NumberFormatException e) {
+			System.out.println("Invalid Input");
+		}catch(Exception e) {
+			System.out.println("An error occured. Make sure the input is follows the correct format.");
+		}
 		
 	}
 	
@@ -41,7 +46,11 @@ public class sExpressionCalculator {
 	 * @return res - the result of the current expression being evaluated.
 	 */
 	public static int calculateExpression(List<String> list	) {
-						
+		
+		if(list.size() == 1) {
+			return Integer.parseInt(list.get(0));
+		}		
+		
 		// the first element in the list is the operation to be performed. Add or Multiply.
 		String function = list.get(0);
 		list.remove(0); // remove the first element.
@@ -60,6 +69,11 @@ public class sExpressionCalculator {
 		
 		List<String> res = new ArrayList<String>();
 		String[] arr = expression.split(" ");
+		
+		if(arr.length == 1) {
+			res.add(arr[0]);
+			return res;
+		}
 		
 		res.add(arr[0].substring(1));
 		
